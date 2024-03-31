@@ -1,0 +1,28 @@
+{
+  "name": "fireflyservicesproxy",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@adobe/aio-sdk": "^5.0.1",
+    "@adobe/generator-app-events-generic": "^2.0.1",
+    "@azure/storage-blob": "^12.17.0",
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-plugin-jest": "^27.2.3",
+    "jest": "^29"
+  },
+  "scripts": {
+    "test": "jest --passWithNoTests ./test",
+    "e2e": "jest --collectCoverage=false --testRegex ./e2e",
+    "lint": "eslint --ignore-pattern web-src --no-error-on-unmatched-pattern test src actions",
+    "run": "aio app run",
+    "lint:fix": "npm run lint -- --fix",
+    "local": "aio app run --local",
+    "deploy": "aio app deploy",
+    "undeploy": "aio app undeploy",
+    "swagger": "aio rt:api:get /api/v1/web/proxy > proxy-swagger.json"
+  }
+}

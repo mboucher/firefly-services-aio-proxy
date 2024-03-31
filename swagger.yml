@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: Swagger Firefly Services Proxy
+  description: |-
+    This is an API proxy service build on Adobe Runtime to provide obfuscation of Firefly Services APIs.
+    Some useful links:
+    - [The Firefly Services API docs](https://developer.adobe.com/firefly-services/docs/guides/)
+  contact:
+    email: mboucher@adobe.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+  - url: https://786177-fireflyservicesproxy-stage.adobeioruntime.net
+tags:
+  - name: accesstoken
+    description: Convenience API to generate access tokens for Firefly and Photoshop
+  - name: blobstore
+    description: Generate presignedURLs for Azure blob store
+  - name: firefly
+    description: Firefly APIs
+  - name: photoshop
+    description: Photoshop APIs
+paths:
+  /api/v1/web/proxy/accesstoken:
+    get:
+      tags:
+        - accesstoken
+      description: Generate a new access token
+      operationId: getIMSAccessToken
+      parameters:
+        - name: serviceName
+          in: query
+          description: Service name
+          required: true
+          explode: true
+          schema:
+            type: string
+            enum:
+              - firefly
+              - photoshop
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/accesstoken"
+        "400":
+          description: Invalid request
+        "401":
+          description: Invalid API Key
+        "405":
+          description: Method not allowed
+  /api/v1/web/proxy/signedUrl:
+    post:
+      tags:
+        - blobstore
+      summary: Returns an Azure blob store presigned URL
+      description: Multiple permissions can be specified for the blob
+      operationId: getPresignedURL
+      parameters:
+        - name: filename
+          in: query
+          description: File name to be created in blob store
+          required: true
+          schema:
+            type: string
+        - name: permissions
+          in: query
+          description: The permissions allowed on the object (r = read, w=write, rw=read & write)
+          required: true
+          schema:
+            type: string
+            enum:
+              - r
+              - w
+              - rw
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/presignedUrl"
+        "400":
+          description: Invalid request
+        "401":
+          description: Invalid API Key
+        "405":
+          description: Method not allowed
+  /api/v1/web/proxy/firefly/{apiPath}:
+    post:
+      tags:
+        - firefly
+      summary: Execute Firefly API
+      description: This is a passthrough proxy. Please refer to the [Firefly API docs](https://developer.adobe.com/firefly-services/docs/firefly-api/) for request and response payload schemas.
+      operationId: callFireflyAPI
+      parameters:
+        - name: apiPath
+          in: path
+          description: The Firefly API endpoint to call for example, /v2/images/generate
+          required: true
+          schema:
+            type: string
+        - name: payload
+          in: query
+          description: Request body to pass to Firefly endpoint
+          required: false
+          explode: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Invalid request
+        "401":
+          description: Invalid API Key
+        "405":
+          description: Method not allowed
+  /api/v1/web/proxy/photoshop/{apiPath}:
+    post:
+      tags:
+        - photoshop
+      summary: Execute Photoshop & Lightroom API
+      description: This is a passthrough proxy. Please refer to the [Photoshop API docs](https://developer.adobe.com/firefly-services/docs/photoshop/) for request and response payload schemas.
+      operationId: callPhotoshopAPI
+      parameters:
+        - name: apiPath
+          in: path
+          description: The Photoshop & Lightroom API endpoint to call for example, /sensei/cutout
+          required: true
+          schema:
+            type: string
+        - name: payload
+          in: query
+          description: Request body to pass to Photoshop or Lightroom endpoint
+          required: false
+          explode: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Invalid request
+        "401":
+          description: Invalid API Key
+        "405":
+          description: Method not allowed
+components:
+  schemas:
+    accesstoken:
+      type: object
+      properties:
+        access_token:
+          type: string
+          format: base64
+          example: <ACCESS_TOKEN>
+    presignedUrl:
+      type: object
+      properties:
+        access_token:
+          type: string
+          format: url
+          example: <PRESIGNED_URL>
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header

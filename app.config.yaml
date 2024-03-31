@@ -1,0 +1,66 @@
+application:
+  actions: actions
+  runtimeManifest:
+    packages:
+      proxy:
+        actions:
+          signedUrl:
+            function: actions/blobstore/index.js
+            runtime: nodejs:18
+            web: yes
+            inputs:
+              PROXY_API_KEY: $PROXY_API_KEY
+              STORAGE_ACCOUNT_NAME: $STORAGE_ACCOUNT_NAME
+              STORAGE_ACCOUNT_KEY: $STORAGE_ACCOUNT_KEY
+              STORAGE_CONTAINER_NAME: $STORAGE_CONTAINER_NAME
+              LOG_LEVEL: debug
+            annotations:
+              require-adobe-auth: false
+              final: true
+          accesstoken:
+            function: actions/accesstoken/index.js
+            runtime: nodejs:18
+            web: yes
+            inputs:
+              PROXY_API_KEY: $PROXY_API_KEY
+              IMS_ENDPOINT_PROD: $IMS_ENDPOINT_PROD
+              FIREFLY_CLIENT_ID: $FIREFLY_CLIENT_ID
+              FIREFLY_CLIENT_SECRET: $FIREFLY_CLIENT_SECRET
+              FIREFLY_CLIENT_SCOPE: $FIREFLY_CLIENT_SCOPE
+              PIE_CLIENT_ID: $PIE_CLIENT_ID
+              PIE_CLIENT_SECRET: $PIE_CLIENT_SECRET
+              PIE_CLIENT_SCOPE: $PIE_CLIENT_SCOPE
+              LOG_LEVEL: debug
+            annotations:
+              require-adobe-auth: false
+              final: true
+          firefly:
+            function: actions/firefly/index.js
+            runtime: nodejs:18
+            web: yes
+            inputs:
+              PROXY_API_KEY: $PROXY_API_KEY
+              IMS_ENDPOINT_PROD: $IMS_ENDPOINT_PROD
+              FIREFLY_API_ENDPOINT: $FIREFLY_API_ENDPOINT
+              FIREFLY_CLIENT_ID: $FIREFLY_CLIENT_ID
+              FIREFLY_CLIENT_SECRET: $FIREFLY_CLIENT_SECRET
+              FIREFLY_CLIENT_SCOPE: $FIREFLY_CLIENT_SCOPE
+              LOG_LEVEL: debug
+            annotations:
+              require-adobe-auth: false
+              final: true
+          photoshop:
+            function: actions/photoshop/index.js
+            runtime: nodejs:18
+            web: yes
+            inputs:
+              PROXY_API_KEY: $PROXY_API_KEY
+              IMS_ENDPOINT_PROD: $IMS_ENDPOINT_PROD
+              PHOTOSHOP_API_ENDPOINT: $PHOTOSHOP_API_ENDPOINT
+              PIE_CLIENT_ID: $PIE_CLIENT_ID
+              PIE_CLIENT_SECRET: $PIE_CLIENT_SECRET
+              PIE_CLIENT_SCOPE: $PIE_CLIENT_SCOPE
+              LOG_LEVEL: debug
+            annotations:
+              require-adobe-auth: false
+              final: true
