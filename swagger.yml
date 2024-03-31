@@ -12,7 +12,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.11
 servers:
-  - url: https://786177-fireflyservicesproxy-stage.adobeioruntime.net
+  - url: https://your.runtime.workspace.url
 tags:
   - name: accesstoken
     description: Convenience API to generate access tokens for Firefly and Photoshop
