@@ -22,7 +22,6 @@
     "lint:fix": "npm run lint -- --fix",
     "local": "aio app run --local",
     "deploy": "aio app deploy",
-    "undeploy": "aio app undeploy",
-    "swagger": "aio rt:api:get /api/v1/web/proxy > proxy-swagger.json"
+    "undeploy": "aio app undeploy"
   }
 }
