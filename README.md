@@ -2,6 +2,10 @@
 
 Welcome to my Adobe Firefly Services Proxy build on Adobe Runtime.
 
+## Swagger docs
+
+https://app.swaggerhub.com/apis-docs/MBOUCHER/swagger-firefly_services_proxy/1.0.11
+
 ## Setup
 
 - rename the `example.env` file to `.env`
