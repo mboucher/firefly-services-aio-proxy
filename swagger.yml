@@ -112,7 +112,7 @@ paths:
           required: false
           explode: true
           schema:
-            type: application/json
+            type: object
 
       responses:
         "200":
@@ -158,7 +158,7 @@ paths:
       tags:
         - operations
       summary: Replaces text in a PSD document
-      description: Uses Mustache placeholders to replace text layers found within a provided PSD document.
+      description: Uses Mustache placeholders to replace text layers found within a provided PSD document. This operation will find all text layers with Mustache (e.g. {{placeholder}}) notation in the PSD document, and substitute all placeholders with the values of any matching keys in the data object.
       operationId: replaceTextInLayers
       parameters:
         - name: payload

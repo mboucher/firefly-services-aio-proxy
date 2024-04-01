@@ -116,7 +116,7 @@ async function processDocuments(args, documents, edits, logger) {
                 ]
             };
 
-            // strip the incoming request body and replace with get manifest request
+            // strip the incoming request body and replace with apply psd edits request
             delete args.documents;
             args.__ow_path = '/pie/psdService/documentOperations';
             const params = {...args, ...payload};
