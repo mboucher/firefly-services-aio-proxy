@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "158262ad-d43c-4e8e-a48a-c152fe2a7255",
+		"name": "Firefly Services Proxy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33532703"
+	},
+	"item": [
+		{
+			"name": "Get Firefly Access Token",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/web/proxy/accesstoken?serviceName=firefly",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"web",
+						"proxy",
+						"accesstoken"
+					],
+					"query": [
+						{
+							"key": "serviceName",
+							"value": "firefly"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Photoshop Access Token",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/web/proxy/accesstoken?serviceName=photoshop",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"web",
+						"proxy",
+						"accesstoken"
+					],
+					"query": [
+						{
+							"key": "serviceName",
+							"value": "photoshop"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Presigned URL",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"fileName\":\"test_2.psd\",\n    \"permissions\":\"w\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/web/proxy/signedUrl",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"web",
+						"proxy",
+						"signedUrl"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Background",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"input\": {\n    \"href\": \"<PRESIGNEDURL>\",\n    \"storage\": \"external\"\n  },\n  \"options\": {\n    \"optimize\": \"performance\",\n    \"process\": {\n      \"postprocess\": true\n    },\n    \"service\": {\n      \"version\": \"4.0\"\n    }\n  },\n  \"output\": {\n    \"href\": \"<PRESIGNEDURL>\",\n    \"storage\": \"azure\",\n    \"overwrite\": true,\n    \"color\": {\n      \"space\": \"rgb\"\n    },\n    \"mask\": {\n      \"format\": \"soft\"\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/web/proxy/photoshop/sensei/cutout",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"web",
+						"proxy",
+						"photoshop",
+						"sensei",
+						"cutout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Manifest",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"inputs\": [\n    {\n      \"storage\": \"azure\",\n      \"href\": \"https://ccapidemo.blob.core.windows.net/ccapi-demo/mustache_test.psd?sv=2023-11-03&st=2024-03-31T21%3A24%3A30Z&se=2024-03-31T22%3A24%3A30Z&sr=b&sp=r&sig=BZhkyaE7Uq3yUbTKmTmiPP2d21rCYKgLAWAVLazS%2FC0%3D\"\n    }\n  ],\n  \"options\": {\n    \"thumbnails\": {\n      \"type\": \"image/jpeg\"\n    }\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/web/proxy/photoshop/pie/psdService/documentManifest",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"web",
+						"proxy",
+						"photoshop",
+						"pie",
+						"psdService",
+						"documentManifest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Replace Text in PSD",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"documents\": [\n        {\n            \"input\": {\n                \"href\":\"<PRESIGNEDURL>\"\n            },\n            \"output\": {\n                \"href\": \"<PRESIGNEDURL>\"\n            },\n            \"locale\": \"en_us\",\n            \"data\": {\n                \"cta\": \"Some Value\"\n            }\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/web/proxy/replacetext",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"web",
+						"proxy",
+						"replacetext"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Text to Image",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "{{API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"prompt\": \"Horses in a field.\",\n  \"negativePrompt\": \"Flowers, people.\",\n  \"contentClass\": \"photo\",\n  \"n\": 2,\n  \"seeds\": [\n    23442,\n    783432\n  ],\n  \"size\": {\n    \"width\": 2048,\n    \"height\": 2048\n  },\n  \"photoSettings\": {\n    \"aperture\": 1.2,\n    \"shutterSpeed\": 0.0005,\n    \"fieldOfView\": 14\n  },\n  \"styles\": {\n    \"presets\": [],\n    \"strength\": 60\n  },\n  \"visualIntensity\": 6,\n  \"locale\": \"en-US\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/v1/web/proxy/firefly/v2/images/generate",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"web",
+						"proxy",
+						"firefly",
+						"v2",
+						"images",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload File",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-ms-blob-type",
+						"value": "BlockBlob",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "file",
+					"file": {
+						"src": ""
+					}
+				},
+				"url": {
+					"raw": "<Presigned URL>",
+					"host": [
+						"<Presigned URL>"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
