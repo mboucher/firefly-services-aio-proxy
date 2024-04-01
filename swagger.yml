@@ -12,7 +12,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.11
 servers:
-  - url: https://your.runtime.workspace.url
+  - url: https://786177-fireflyservicesproxy-stage.adobeioruntime.net
 tags:
   - name: accesstoken
     description: Convenience API to generate access tokens for Firefly and Photoshop
@@ -22,6 +22,8 @@ tags:
     description: Firefly APIs
   - name: photoshop
     description: Photoshop APIs
+  - name: operations
+    description: Common document operations
 paths:
   /api/v1/web/proxy/accesstoken:
     get:
@@ -110,7 +112,8 @@ paths:
           required: false
           explode: true
           schema:
-            type: object
+            type: application/json
+
       responses:
         "200":
           description: successful operation
@@ -150,6 +153,31 @@ paths:
           description: Invalid API Key
         "405":
           description: Method not allowed
+  /api/v1/web/proxy/replacetext:
+    post:
+      tags:
+        - operations
+      summary: Replaces text in a PSD document
+      description: Uses Mustache placeholders to replace text layers found within a provided PSD document.
+      operationId: replaceTextInLayers
+      parameters:
+        - name: payload
+          in: query
+          description: Request body is an array of PSD documents with identical structure
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/replacetext"
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Invalid request
+        "401":
+          description: Invalid API Key
+        "405":
+          description: Method not allowed
 components:
   schemas:
     accesstoken:
@@ -162,10 +190,44 @@ components:
     presignedUrl:
       type: object
       properties:
-        access_token:
+        presignedUrl:
           type: string
           format: url
           example: <PRESIGNED_URL>
+    replacetext:
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: "#/components/schemas/document"
+
+    document:
+      type: object
+      properties:
+        input:
+          type: object
+          properties:
+            href:
+              type: string
+              format: url
+              example: https://presigned.read.url
+        output:
+          type: object
+          properties:
+            href:
+              type: string
+              format: url
+              example: https://presigned.write.url
+        locale:
+          type: string
+          example: en_us
+        data:
+          type: object
+          properties:
+            key:
+              type: string
+              example: value
   securitySchemes:
     api_key:
       type: apiKey

@@ -21,43 +21,27 @@ const { Core } = require('@adobe/aio-sdk');
 const { getIMSAccessToken } = require('./ims');
 const { Services } = require('./constants');
 const axios = require('axios');
-const {passthuResponse, errorResponse} = require('./http');
+const {passthuResponse} = require('./http');
 const { monitorJob } = require('./photoshopJob');
 
 async function callPhotoshopAPI (args) {
-    const { 
-        PROXY_API_KEY,
-        IMS_ENDPOINT_PROD,
-        PHOTOSHOP_API_ENDPOINT,
-        PIE_CLIENT_ID, 
-        PIE_CLIENT_SECRET,
-        PIE_CLIENT_SCOPE,
-        LOG_LEVEL,
-        __ow_method,
-        __ow_headers,
-        __ow_path,
-         ...payload} = args;
-
-    const logger = Core.Logger('main', {level: LOG_LEVEL});
-
-    // Only allow POST.
-    if(__ow_method !== 'post') {
-    logger.debug(`Request not allowed: ${__ow_method} `);
-    return errorResponse(405, `Method not allowed.`);
-    }
-
-    // Validate API key.
-    if(!__ow_headers['x-api-key']) {
-        logger.error(`API Key not provided.`);
-        return errorResponse(405, `API key not provided.`);
-    }
-    if(__ow_headers['x-api-key'] !== PROXY_API_KEY) {
-        logger.error(`Invalid API key.`);
-        return errorResponse(405, `Invalid API key.`);
-    } 
-
-
+    let logger=null;
     try {
+        const { 
+            PROXY_API_KEY,
+            IMS_ENDPOINT_PROD,
+            PHOTOSHOP_API_ENDPOINT,
+            PIE_CLIENT_ID, 
+            PIE_CLIENT_SECRET,
+            PIE_CLIENT_SCOPE,
+            LOG_LEVEL,
+            __ow_method,
+            __ow_headers,
+            __ow_path,
+            ...payload} = args;
+    
+        logger = Core.Logger('main', {level: LOG_LEVEL});
+
         const imsArgs = {
             IMS_ENDPOINT_PROD: IMS_ENDPOINT_PROD,
             PIE_CLIENT_ID:PIE_CLIENT_ID,
@@ -82,7 +66,7 @@ async function callPhotoshopAPI (args) {
 
     } catch (error) {
         logger.info(`Error while calling Photoshop API: ${error}.`);
-        return errorResponse(500, `Error while calling Photoshop API: ${error}.`);
+        throw error;
     }
 }
 
