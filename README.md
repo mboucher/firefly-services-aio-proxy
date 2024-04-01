@@ -9,7 +9,7 @@ Welcome to my Adobe Firefly Services Proxy build on Adobe Runtime.
 
 ## Local Dev
 
-- `yarn run` to start your local Dev server
+- `yarn remote` to start your local Dev server
 - App will run on `localhost:9080` by default
 
 By the actions will be deployed and served from Adobe I/O Runtime. To start a
